@@ -75,6 +75,10 @@ dependencies:
   #toggle
   toggle_switch: ^2.3.0
 
+  #sharedpref
+  shared_preferences: ^2.0.0
+  sqflite: ^2.3.3+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

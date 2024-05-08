@@ -12,14 +12,46 @@ class HomeCurrentWeather extends StatelessWidget {
     return Row(
       children: [
         const SizedBox(width: 48),
-        Text("${currentWeatherModel?.temperature.metric.value.round()}\u00B0",
-            style: TextStyle(
-                color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-                fontSize: 64,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins'
-            )
-        ),
+        FutureBuilder<bool?>(
+            future: Utils.isFahrenheit(),
+            builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  // If an error occurs while fetching data, display an error message
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  if (snapshot.data!) {
+                    // display in fahrenheit
+                    return Text("${currentWeatherModel?.temperature.imperial.value.round()}\u00B0",
+                        style: TextStyle(
+                            color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
+                            fontSize: 64,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
+                        )
+                    );
+                  } else {
+                    // display in celsius
+                    return Text("${currentWeatherModel?.temperature.metric.value.round()}\u00B0",
+                        style: TextStyle(
+                            color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
+                            fontSize: 64,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
+                        )
+                    );
+                  }
+                }
+            }),
+        // Text("${currentWeatherModel?.temperature.metric.value.round()}\u00B0",
+        //     style: TextStyle(
+        //         color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
+        //         fontSize: 64,
+        //         fontWeight: FontWeight.bold,
+        //         fontFamily: 'Poppins'
+        //     )
+        // ),
         const SizedBox(width: 24),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,

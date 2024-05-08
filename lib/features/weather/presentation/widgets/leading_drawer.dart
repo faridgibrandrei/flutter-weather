@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:whats_the_weather/core/util/pref_helper.dart';
+import 'package:whats_the_weather/core/util/utils.dart';
 import 'package:whats_the_weather/features/weather/presentation/pages/home/home_main.dart';
 import 'package:whats_the_weather/features/weather/presentation/pages/search/search_main.dart';
 
@@ -56,27 +59,40 @@ class LeadingDrawer extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 36,),
-              Container(
-                child: Column(
-                  children: [
-                    const Text("Temperature Unit"),
-                    ToggleSwitch(
-                      animate: true,
-                      animationDuration: 200,
-                      activeBgColor: const [Color(0xff60a1dc)],
-                      activeFgColor: Colors.white,
-                      inactiveBgColor: const Color(0xff777777),
-                      inactiveFgColor: Colors.white,
-                      initialLabelIndex: 0,
-                      totalSwitches: 2,
-                      centerText: true,
-                      labels: const ['\u00B0C', '\u00B0F'],
-                      onToggle: (index) {
-                        print('switched to: $index');
-                      },
-                    ),
-                  ],
-                ),
+              FutureBuilder<int?>(
+                future: PrefHelper.getIntValue(PrefHelper.temperatureState),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    // If an error occurs while fetching data, display an error message
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return Container(
+                      child: Column(
+                        children: [
+                          const Text("Temperature Unit"),
+                          ToggleSwitch(
+                            animate: true,
+                            animationDuration: 200,
+                            activeBgColor: const [Color(0xff60a1dc)],
+                            activeFgColor: Colors.white,
+                            inactiveBgColor: const Color(0xff777777),
+                            inactiveFgColor: Colors.white,
+                            initialLabelIndex: snapshot.data,
+                            totalSwitches: 2,
+                            centerText: true,
+                            labels: const ['\u00B0C', '\u00B0F'],
+                            onToggle: (index) {
+                              PrefHelper.saveIntValue(PrefHelper.temperatureState, index!);
+                              print('switched to: $index');
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
               // Add more list tiles for additional pages
             ],

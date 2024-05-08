@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whats_the_weather/core/util/utils.dart';
+import 'package:whats_the_weather/core/util/pref_helper.dart';
 import 'package:whats_the_weather/features/weather/data/models/accu/current_weather_model.dart';
+import 'package:whats_the_weather/features/weather/data/models/favorite_loc_model.dart';
 import 'package:whats_the_weather/features/weather/presentation/bloc/forecast/forecast_bloc.dart';
 import 'package:whats_the_weather/features/weather/presentation/bloc/forecast/forecast_event.dart';
 import 'package:whats_the_weather/features/weather/presentation/bloc/forecast/forecast_state.dart';
@@ -12,10 +14,11 @@ import 'package:whats_the_weather/features/weather/presentation/widgets/forecast
 import 'package:whats_the_weather/injection_container.dart';
 
 class HomeBody extends StatelessWidget {
-  const HomeBody({super.key, this.currentWeatherModel, this.locationKey});
+  const HomeBody({super.key, this.currentWeatherModel, this.locationKey, this.locationName});
 
   final CurrentWeatherModel? currentWeatherModel;
   final String? locationKey;
+  final String? locationName;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,18 @@ class HomeBody extends StatelessWidget {
           const SizedBox(height: 28),
           HomeCurrentWeather(currentWeatherModel: currentWeatherModel),
           Expanded(child: Container()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                  onPressed: () async {
+                    FavoriteLoc favoriteLoc = FavoriteLoc(key: locationKey ?? '', localizedName: locationName ?? '');
+                    await PrefHelper.saveFavoriteLocation(favoriteLoc);
+                  },
+                  icon: Icon(Icons.favorite)),
+              Expanded(child: Container())
+            ],
+          ),
           Container(
             margin: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
               decoration: BoxDecoration(
@@ -69,8 +84,8 @@ class HomeBody extends StatelessWidget {
                           if (forecastState is ForecastError) {
                             print('(FORECAST) GAGAL BOS');
                             return Container(
-                                  child: Center(
-                                    child: Text("CAPEDEW"),
+                                  child: const Center(
+                                    child: Text("Failed to retrieve data from server"),
                                     // child: Lottie.asset("assets/animations/sunny.json")
                                     ),
                                   );

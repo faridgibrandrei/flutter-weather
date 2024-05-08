@@ -83,7 +83,6 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
               ),
             ),
           );
-          // return Text('Error: ${snapshot.error}');
         } else {
           //WITHOUT API
           // return Scaffold(
@@ -141,7 +140,10 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                               return Scaffold(
                                 appBar: _buildAppbar(context, locationState.locationKeyModel?.localizedName ?? ''),
                                 drawer: LeadingDrawer(parentContext: context),
-                                body: HomeBody(currentWeatherModel: weatherState.currentWeatherModel, locationKey: locationState.locationKeyModel?.key ?? ''),
+                                body: HomeBody(
+                                    currentWeatherModel: weatherState.currentWeatherModel,
+                                    locationKey: locationState.locationKeyModel?.key ?? '',
+                                    locationName: locationState.locationKeyModel?.localizedName ?? ''),
                               );
                             }
                             return const SizedBox();
@@ -180,7 +182,10 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
               return Scaffold(
                 appBar: _buildAppbar(context, widget.locationName!),
                 drawer: LeadingDrawer(parentContext: context),
-                body: HomeBody(currentWeatherModel: weatherState.currentWeatherModel, locationKey: widget.locationKey!),
+                body: HomeBody(
+                    currentWeatherModel: weatherState.currentWeatherModel,
+                    locationKey: widget.locationKey!,
+                    locationName: widget.locationName),
               );
             }
             return const SizedBox();
