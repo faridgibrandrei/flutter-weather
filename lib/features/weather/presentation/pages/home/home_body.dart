@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:whats_the_weather/core/util/sql_helper.dart';
 import 'package:whats_the_weather/core/util/utils.dart';
 import 'package:whats_the_weather/core/util/pref_helper.dart';
 import 'package:whats_the_weather/features/weather/data/models/accu/current_weather_model.dart';
@@ -45,6 +46,7 @@ class HomeBody extends StatelessWidget {
                   onPressed: () async {
                     FavoriteLoc favoriteLoc = FavoriteLoc(key: locationKey ?? '', localizedName: locationName ?? '');
                     await PrefHelper.saveFavoriteLocation(favoriteLoc);
+                    _addItem(locationName!, locationKey!);
                   },
                   icon: Icon(Icons.favorite)),
               Expanded(child: Container())
@@ -113,5 +115,9 @@ class HomeBody extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _addItem(String cityName, String locationKey) async {
+    await SQLHelper.createItem(cityName, locationKey);
   }
 }

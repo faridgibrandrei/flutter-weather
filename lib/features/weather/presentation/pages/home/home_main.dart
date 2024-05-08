@@ -139,7 +139,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                               print('(WEATHER) KELAR BOS');
                               return Scaffold(
                                 appBar: _buildAppbar(context, locationState.locationKeyModel?.localizedName ?? ''),
-                                drawer: LeadingDrawer(parentContext: context),
+                                drawer: LeadingDrawer(parentContext: context, onTempChange: handleDrawerClosed),
                                 body: HomeBody(
                                     currentWeatherModel: weatherState.currentWeatherModel,
                                     locationKey: locationState.locationKeyModel?.key ?? '',
@@ -181,7 +181,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
               print('(WEATHER) KELAR BOS');
               return Scaffold(
                 appBar: _buildAppbar(context, widget.locationName!),
-                drawer: LeadingDrawer(parentContext: context),
+                drawer: LeadingDrawer(parentContext: context, onTempChange: handleDrawerClosed),
                 body: HomeBody(
                     currentWeatherModel: weatherState.currentWeatherModel,
                     locationKey: widget.locationKey!,
@@ -206,5 +206,9 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
       ),
       backgroundColor: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
     );
+  }
+
+  void handleDrawerClosed() {
+    setState(() {});
   }
 }

@@ -4,12 +4,14 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:whats_the_weather/core/util/pref_helper.dart';
 import 'package:whats_the_weather/core/util/utils.dart';
 import 'package:whats_the_weather/features/weather/presentation/pages/home/home_main.dart';
+import 'package:whats_the_weather/features/weather/presentation/pages/saved_location/saved_location_main.dart';
 import 'package:whats_the_weather/features/weather/presentation/pages/search/search_main.dart';
 
 class LeadingDrawer extends StatelessWidget {
-  const LeadingDrawer({super.key, required this.parentContext});
+  const LeadingDrawer({super.key, required this.parentContext, required this.onTempChange});
 
   final BuildContext parentContext;
+  final Function onTempChange;
 
   @override
   Widget build(BuildContext context) {
@@ -34,28 +36,22 @@ class LeadingDrawer extends StatelessWidget {
               ListTile(
                 title: Text('My Location'),
                 onTap: () {
-                  // Navigate to page 1
-                  Navigator.pop(context); // Close the drawer
-
-                  // Add your navigation logic here
+                  Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeMain()));
                 },
               ),
               ListTile(
                 title: Text('Search'),
                 onTap: () {
-                  // Navigate to page 2
-                  Navigator.pop(context); // Close the drawer
-                  // Add your navigation logic here
+                  Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchMain()));
                 },
               ),
               ListTile(
                 title: Text('Saved Location'),
                 onTap: () {
-                  // Navigate to page 2
-                  Navigator.pop(context); // Close the drawer
-                  // Add your navigation logic here
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SavedLocationMain()));
                 },
               ),
               const SizedBox(height: 36,),
@@ -84,6 +80,7 @@ class LeadingDrawer extends StatelessWidget {
                             centerText: true,
                             labels: const ['\u00B0C', '\u00B0F'],
                             onToggle: (index) {
+                              onTempChange();
                               PrefHelper.saveIntValue(PrefHelper.temperatureState, index!);
                               print('switched to: $index');
                             },
