@@ -5,8 +5,8 @@ class SQLHelper{
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""CREATE TABLE items(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        title TEXT,
-        description TEXT,
+        locationName TEXT,
+        locationKey TEXT,
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
@@ -14,7 +14,7 @@ class SQLHelper{
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
-      'dbtech.db',
+      'dbloc.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);
@@ -22,10 +22,10 @@ class SQLHelper{
     );
   }
 
-  static Future<int> createItem(String title, String? descrption) async {
+  static Future<int> createItem(String locationName, String locationKey) async {
     final db = await SQLHelper.db();
 
-    final data = {'title': title, 'description': descrption};
+    final data = {'locationName': locationName, 'locationKey': locationKey};
     final id = await db.insert('items', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;

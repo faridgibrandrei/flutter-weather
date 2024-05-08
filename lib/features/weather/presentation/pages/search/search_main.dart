@@ -95,11 +95,8 @@ class _SearchMainState extends State<SearchMain> {
                                         String locationKey = state.matchLocationKeyModels![index].key;
                                         String locationName = state.matchLocationKeyModels![index].localizedName;
 
-                                        // Navigator.pop(context); // Close the drawer
-
-                                        // Add your navigation logic here
+                                        Navigator.pop(context);
                                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomeMain(locationKey: locationKey, locationName: locationName,)));
-                                        // Handle onTap action
                                         print('Selected city: ${state.matchLocationKeyModels?[index].localizedName}');
                                       },
                                     );

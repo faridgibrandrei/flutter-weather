@@ -37,6 +37,7 @@ class LeadingDrawer extends StatelessWidget {
                 title: Text('My Location'),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeMain()));
                 },
               ),
@@ -44,12 +45,14 @@ class LeadingDrawer extends StatelessWidget {
                 title: Text('Search'),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchMain()));
                 },
               ),
               ListTile(
                 title: Text('Saved Location'),
                 onTap: () {
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SavedLocationMain()));
                 },

@@ -105,12 +105,18 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                   }
                   if (locationState is LocationError) {
                     print('(LOCATION) GAGAL BOS');
+                    print(locationState.error!.message);
                     return Scaffold(
                       appBar: _buildAppbar(context, ''),
                       body: Center(
                       child: Container(
                         margin: const EdgeInsets.only(left: 36, right: 36),
-                        child: Lottie.asset("assets/animations/error_animation.json"),
+                        child: Column(
+                          children: [
+                            Lottie.asset("assets/animations/error_animation.json"),
+                            _showMessage(locationState.error!.message),
+                          ],
+                        ),
                       ),),);
                   }
                   if (locationState is LocationDone) {
@@ -132,7 +138,12 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                                 body: Center(
                                 child: Container(
                                   margin: const EdgeInsets.only(left: 36, right: 36),
-                                  child: Lottie.asset("assets/animations/error_animation.json"),
+                                  child: Column(
+                                    children: [
+                                      Lottie.asset("assets/animations/error_animation.json"),
+                                      _showMessage(weatherState.error!.message),
+                                    ],
+                                  ),
                                 ),),);
                             }
                             if (weatherState is WeatherDone) {
@@ -174,7 +185,12 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                 body: Center(
                 child: Container(
                   margin: const EdgeInsets.only(left: 36, right: 36),
-                  child: Lottie.asset("assets/animations/error_animation.json"),
+                  child: Column(
+                    children: [
+                      Lottie.asset("assets/animations/error_animation.json"),
+                      _showMessage(weatherState.error!.message),
+                    ],
+                  ),
                 ),),);
             }
             if (weatherState is WeatherDone) {
@@ -205,6 +221,17 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
         ),
       ),
       backgroundColor: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
+    );
+  }
+
+  _showMessage(String message) {
+    return Text(message,
+      style: TextStyle(
+          color: Utils.isDarkMode(context)? const Color(0xffFFFFFF) : const Color(0xff322362),
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Poppins'
+      ),
     );
   }
 
