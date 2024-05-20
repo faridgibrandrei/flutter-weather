@@ -114,7 +114,6 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                         child: Column(
                           children: [
                             Lottie.asset("assets/animations/error_animation.json"),
-                            _showMessage(locationState.error!.message),
                           ],
                         ),
                       ),),);
@@ -141,7 +140,6 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                                   child: Column(
                                     children: [
                                       Lottie.asset("assets/animations/error_animation.json"),
-                                      _showMessage(weatherState.error!.message),
                                     ],
                                   ),
                                 ),),);
@@ -188,7 +186,6 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                   child: Column(
                     children: [
                       Lottie.asset("assets/animations/error_animation.json"),
-                      _showMessage(weatherState.error!.message),
                     ],
                   ),
                 ),),);
@@ -213,25 +210,16 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
   _buildAppbar(BuildContext context, String title) {
     return AppBar(
       title: Text(title!=''? title : appName,
-        style: TextStyle(
-          color: Utils.isDarkMode(context)? const Color(0xffFFFFFF) : const Color(0xff322362),
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Poppins'
-        ),
+        style: Theme.of(context).appBarTheme.titleTextStyle,
+        // TextStyle(
+        //   color: Utils.isDarkMode(context)? const Color(0xffFFFFFF) : const Color(0xff322362),
+        //   fontSize: 18,
+        //   fontWeight: FontWeight.bold,
+        //   fontFamily: 'Poppins'
+        // ),
       ),
-      backgroundColor: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
-    );
-  }
-
-  _showMessage(String message) {
-    return Text(message,
-      style: TextStyle(
-          color: Utils.isDarkMode(context)? const Color(0xffFFFFFF) : const Color(0xff322362),
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Poppins'
-      ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      // backgroundColor: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
     );
   }
 

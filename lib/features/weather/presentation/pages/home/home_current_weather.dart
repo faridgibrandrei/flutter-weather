@@ -24,62 +24,29 @@ class HomeCurrentWeather extends StatelessWidget {
                   if (snapshot.data!) {
                     // display in fahrenheit
                     return Text("${currentWeatherModel?.temperature.imperial.value.round()}\u00B0",
-                        style: TextStyle(
-                            color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-                            fontSize: 64,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins'
-                        )
+                        style: Theme.of(context).textTheme.displayLarge,
                     );
                   } else {
                     // display in celsius
                     return Text("${currentWeatherModel?.temperature.metric.value.round()}\u00B0",
-                        style: TextStyle(
-                            color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-                            fontSize: 64,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins'
-                        )
+                        style: Theme.of(context).textTheme.displayLarge,
                     );
                   }
                 }
             }),
-        // Text("${currentWeatherModel?.temperature.metric.value.round()}\u00B0",
-        //     style: TextStyle(
-        //         color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-        //         fontSize: 64,
-        //         fontWeight: FontWeight.bold,
-        //         fontFamily: 'Poppins'
-        //     )
-        // ),
         const SizedBox(width: 24),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("${currentWeatherModel?.weatherText}",
-                style: TextStyle(
-                    color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins'
-                )
+                style: Theme.of(context).textTheme.displayMedium,
             ),
             Text("humidity: ${currentWeatherModel?.relativeHumidity}%",
-                style: TextStyle(
-                    color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Poppins'
-                )
+                style: Theme.of(context).textTheme.displaySmall,
             ),
             Text("wind: ${currentWeatherModel?.wind.speed.metric.value} km/h",
-                style: TextStyle(
-                    color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Poppins'
-                )
+                style: Theme.of(context).textTheme.displaySmall,
             ),
           ],
         )

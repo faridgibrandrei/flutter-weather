@@ -6,6 +6,7 @@ import 'package:whats_the_weather/features/weather/data/models/favorite_loc_mode
 class PrefHelper {
   //Key
   static const String temperatureState = "temperatureState";
+  static const String themeState = "themeState";
 
 
   //Method

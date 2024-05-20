@@ -29,24 +29,8 @@ class ForecastItem extends StatelessWidget {
           ),
           Text(
             '${dailyForecast?.temperature.minimum.value.round()}\u00B0 / ${dailyForecast?.temperature.maximum.value.round()}\u00B0',
-            style: TextStyle(
-              color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Poppins'
-            ),
+            style: Theme.of(context).textTheme.displaySmall,
           ),
-
-          // Description of the weather
-          // Text(
-          //   "${dailyForecast?.day.iconPhrase}",
-          //   style: const TextStyle(
-          //     color: Color(0xff322362),
-          //     fontSize: 10,
-          //     fontWeight: FontWeight.normal,
-          //     fontFamily: 'Poppins'
-          //   ),
-          // ),
         ],
       ),
     );

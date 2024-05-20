@@ -25,7 +25,8 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
+        color: Theme.of(context).colorScheme.background
+        // color: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -55,7 +56,8 @@ class HomeBody extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
               decoration: BoxDecoration(
-                color: Utils.isDarkMode(context)? const Color(0xff4A3B7A) : const Color(0xffEBF4F9),
+                color: Theme.of(context).colorScheme.primary,
+                // color: Utils.isDarkMode(context)? const Color(0xff4A3B7A) : const Color(0xffEBF4F9),
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.all(8),
@@ -63,12 +65,7 @@ class HomeBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("5-Days Forecast",
-                      style: TextStyle(
-                          color: Utils.isDarkMode(context)? const Color(0xfffdfcfd) : const Color(0xff322362),
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins'
-                      )
+                      style: Theme.of(context).textTheme.displayMedium,
                   ),
                   SizedBox(height: 20.0),
 
