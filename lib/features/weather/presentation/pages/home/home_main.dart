@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whats_the_weather/core/constants/constants.dart';
 import 'package:whats_the_weather/core/util/utils.dart';
@@ -73,11 +74,38 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(left: 36, right: 36),
-                      child: Lottie.asset("assets/animations/error_animation.json"),
+                      child: Lottie.asset("assets/animations/location_animation.json"),
                     ),
-                    const Text('Please grant location permission!',
-                    textAlign: TextAlign.center,),
+                    const Text(
+                      permissionRequired,
+                      textAlign: TextAlign.center,),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.blue, // background
+                        backgroundColor: Colors.blue[100], // foreground
+                      ),
+                      onPressed: () async {
+                        if (await Permission.location.serviceStatus.isEnabled) {
+                          var status = await Permission.location.status;
+                          if (status.isGranted) {
+                            print('(PERMISSION) Location permission is granted');
+                            setState(() {});
+                          } else if (status.isPermanentlyDenied) {
+                            print('(PERMISSION) Location permission is permanently denied');
+                            openAppSettings();
+                          } else if (status.isDenied) {
+                            print('(PERMISSION) Location permission is not granted');
+                            Map<Permission, PermissionStatus> status = await [
+                              Permission.location,
+                            ].request();
+                          }
+                        } else {
+                          print('(PERMISSION) Location service is disabled');
+                        }
+                      },
+                      child: const Text(grantPermission),
+                    )
+
                   ],
                 ),
               ),
@@ -211,15 +239,8 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
     return AppBar(
       title: Text(title!=''? title : appName,
         style: Theme.of(context).appBarTheme.titleTextStyle,
-        // TextStyle(
-        //   color: Utils.isDarkMode(context)? const Color(0xffFFFFFF) : const Color(0xff322362),
-        //   fontSize: 18,
-        //   fontWeight: FontWeight.bold,
-        //   fontFamily: 'Poppins'
-        // ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      // backgroundColor: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
     );
   }
 

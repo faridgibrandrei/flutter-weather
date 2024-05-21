@@ -35,7 +35,7 @@ final ThemeData lightMode = ThemeData(
     displaySmall: TextStyle(
       fontFamily: fontFam,
       fontSize: 12,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.normal,
       color: Color(0Xff342563),
     ),
     titleLarge: TextStyle(

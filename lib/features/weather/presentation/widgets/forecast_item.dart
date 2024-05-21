@@ -21,7 +21,7 @@ class ForecastItem extends StatelessWidget {
         children: [
           Container(
             child: Lottie.asset(
-              "assets/animations/sunny.json",
+              "assets/animations/sunny_animation.json",
               width: 50,
               height: 50,
               fit: BoxFit.fill,

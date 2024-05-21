@@ -32,7 +32,7 @@ class HomeBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            child: Lottie.asset("assets/animations/sunny.json",
+            child: Lottie.asset("assets/animations/sunny_animation.json",
               width: 250,
               fit: BoxFit.fitWidth,
             ),
