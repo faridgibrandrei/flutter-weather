@@ -14,3 +14,6 @@ const String fontFam = 'Poppins';
 // PERMISSION
 const String grantPermission = 'Grant Permission';
 const String permissionRequired = 'we need location permission to continue';
+
+//
+const String refreshPage = 'Refresh';
