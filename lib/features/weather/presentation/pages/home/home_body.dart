@@ -13,6 +13,8 @@ import 'package:whats_the_weather/features/weather/presentation/bloc/forecast/fo
 import 'package:whats_the_weather/features/weather/presentation/pages/home/home_current_weather.dart';
 import 'package:whats_the_weather/features/weather/presentation/widgets/forecast_item.dart';
 import 'package:whats_the_weather/injection_container.dart';
+import 'package:provider/provider.dart';
+import 'package:whats_the_weather/features/weather/presentation/favorite_provider.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key, this.currentWeatherModel, this.locationKey, this.locationName});
@@ -23,10 +25,12 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isFavorite = Provider.of<FavoriteProvider>(context).isFavorite;
+    Color iconColor = isFavorite ? const Color(0xffC43667) : const Color(0xffD7D7D7);
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background
-        // color: Utils.isDarkMode(context)? const Color(0xff342563) : const Color(0xffDDECFA),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -44,12 +48,11 @@ class HomeBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                  onPressed: () async {
-                    FavoriteLoc favoriteLoc = FavoriteLoc(key: locationKey ?? '', localizedName: locationName ?? '');
-                    await PrefHelper.saveFavoriteLocation(favoriteLoc);
-                    _addItem(locationName!, locationKey!);
-                  },
-                  icon: Icon(Icons.favorite)),
+                onPressed: () async {
+                  await toggleFavoriteStatus(context);
+                },
+                icon: Icon(Icons.favorite, color: iconColor),
+              ),
               Expanded(child: Container())
             ],
           ),
@@ -67,7 +70,7 @@ class HomeBody extends StatelessWidget {
                   Text("5-Days Forecast",
                       style: Theme.of(context).textTheme.displayMedium,
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
 
                   // ForecastItem
                   BlocProvider<ForecastBloc>(
@@ -114,7 +117,7 @@ class HomeBody extends StatelessWidget {
     );
   }
 
-  Future<void> _addItem(String cityName, String locationKey) async {
-    await SQLHelper.createItem(cityName, locationKey);
+  Future<void> toggleFavoriteStatus(BuildContext context) async {
+    Provider.of<FavoriteProvider>(context, listen: false).setLocationAndCheckFavorite(locationName!, locationKey!);
   }
 }

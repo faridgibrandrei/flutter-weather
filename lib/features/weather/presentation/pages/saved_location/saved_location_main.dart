@@ -32,8 +32,6 @@ class _SavedLocationMainState extends State<SavedLocationMain> {
 
   @override
   Widget build(BuildContext context) {
-    Future<FavoriteLoc?> favoriteLoc = PrefHelper.getFavoriteLocation();
-
     return Scaffold(
       appBar: _buildAppbar("Saved Location"),
       body: Container(

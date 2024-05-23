@@ -33,20 +33,5 @@ class PrefHelper {
     return prefs.getString(key);
   }
 
-  static Future<void> saveFavoriteLocation(FavoriteLoc favoriteLoc) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = jsonEncode(favoriteLoc.toJson());
-    prefs.setString('favorite_loc', jsonString);
-  }
-
-  static Future<FavoriteLoc?> getFavoriteLocation() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? jsonString = prefs.getString('favorite_loc');
-    if (jsonString != null) {
-      Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-      return FavoriteLoc.fromJson(jsonMap);
-    }
-  }
-
 
 }
