@@ -31,6 +31,10 @@ class ForecastItem extends StatelessWidget {
             '${dailyForecast?.temperature.minimum.value.round()}\u00B0 / ${dailyForecast?.temperature.maximum.value.round()}\u00B0',
             style: Theme.of(context).textTheme.displaySmall,
           ),
+          Text(
+            Utils.epochToDate(dailyForecast!.epochDate, 'EEE'),
+            style: Theme.of(context).textTheme.displaySmall,
+          )
         ],
       ),
     );

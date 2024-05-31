@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whats_the_weather/config/theme/theme.dart';
-import 'package:whats_the_weather/config/theme/theme_provider.dart';
-import 'package:whats_the_weather/features/weather/presentation/favorite_provider.dart';
+import 'package:whats_the_weather/features/weather/presentation/provider/theme_provider.dart';
+import 'package:whats_the_weather/features/weather/presentation/provider/favorite_provider.dart';
 import 'package:whats_the_weather/features/weather/presentation/pages/home/home_main.dart';
 import 'package:whats_the_weather/injection_container.dart';
 import 'package:provider/provider.dart';

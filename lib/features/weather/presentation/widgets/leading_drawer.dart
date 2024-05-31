@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:whats_the_weather/config/theme/theme_provider.dart';
+import 'package:whats_the_weather/features/weather/presentation/provider/theme_provider.dart';
 import 'package:whats_the_weather/core/util/pref_helper.dart';
 import 'package:whats_the_weather/features/weather/presentation/pages/home/home_main.dart';
 import 'package:whats_the_weather/features/weather/presentation/pages/saved_location/saved_location_main.dart';
@@ -23,7 +23,6 @@ class LeadingDrawer extends StatelessWidget {
               DrawerHeader(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
-                  // color: Color(0xff76ADDE),
                 ),
                 child: const Center(
                   child: Text(
@@ -85,8 +84,6 @@ class LeadingDrawer extends StatelessWidget {
                   }
                 },
               ),
-              Expanded(child: Container()),
-              const Text("© 2024 MasteDrei"),
             ],
           ),
       );

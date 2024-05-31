@@ -5,7 +5,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whats_the_weather/core/constants/constants.dart';
+import 'package:whats_the_weather/core/util/sql_helper.dart';
 import 'package:whats_the_weather/core/util/utils.dart';
+import 'package:whats_the_weather/features/weather/data/models/accu/current_weather_model.dart';
+import 'package:whats_the_weather/features/weather/data/models/accu/temperature_model.dart';
 import 'package:whats_the_weather/features/weather/presentation/bloc/location/location_bloc.dart';
 import 'package:whats_the_weather/features/weather/presentation/bloc/location/location_event.dart';
 import 'package:whats_the_weather/features/weather/presentation/bloc/location/location_state.dart';
@@ -32,11 +35,13 @@ class HomeMain extends StatefulWidget {
 class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
 
   late final AnimationController _controller;
+  late CurrentWeatherModel? _offlineData = null;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    getLastData();
   }
 
   @override
@@ -55,6 +60,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
         } else if (snapshot.hasError) {
             return _requestPermission();
         } else {
+            // getLastData();
             final locationData = snapshot.data!;
             return BlocProvider<LocationBloc>(
               create: (context) => sl()..add(GetLocationKey("${locationData.latitude},${locationData.longitude}")),
@@ -64,7 +70,9 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                       return _loadingIndicator('(LOCATION) SABAR BOS');
                     }
                     if (locationState is LocationError) {
-                      return _displayError('(LOCATION) GAGAL BOS');
+                      // offline mode
+                      return _offlineMode();
+                      // return _displayError('(LOCATION) GAGAL BOS');
                     }
                     if (locationState is LocationDone) {
                       print('(LOCATION) KELAR BOS');
@@ -80,8 +88,10 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                               }
                               if (weatherState is WeatherDone) {
                                 print('(WEATHER) KELAR BOS');
+                                SQLHelper.saveLastWeather(weatherState.currentWeatherModel!);
+                                SQLHelper.getWeathers();
                                 return Scaffold(
-                                  appBar: _buildAppbar(context, locationState.locationKeyModel?.localizedName ?? ''),
+                                  appBar: _buildAppbar(context, locationState.locationKeyModel?.localizedName ?? '', weatherState.currentWeatherModel?.epochTime ?? 0),
                                   drawer: LeadingDrawer(parentContext: context, onTempChange: handleDrawerClosed),
                                   body: HomeBody(
                                       currentWeatherModel: weatherState.currentWeatherModel,
@@ -113,7 +123,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
             if (weatherState is WeatherDone) {
               print('(WEATHER) KELAR BOS');
               return Scaffold(
-                appBar: _buildAppbar(context, widget.locationName!),
+                appBar: _buildAppbar(context, widget.locationName!, weatherState.currentWeatherModel?.epochTime ?? 0),
                 drawer: LeadingDrawer(parentContext: context, onTempChange: handleDrawerClosed),
                 body: HomeBody(
                     currentWeatherModel: weatherState.currentWeatherModel,
@@ -127,12 +137,21 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
     );
   }
 
-  _buildAppbar(BuildContext context, String title) {
+  _buildAppbar(BuildContext context, String title, int epoch) {
     return AppBar(
-      title: Center(
-        child: Text(title!=''? title : appName,
-          style: Theme.of(context).appBarTheme.titleTextStyle,
-        ),
+      title: Column(
+        children: [
+          Center(
+            child: Text(title!=''? title : appName,
+              style: Theme.of(context).appBarTheme.titleTextStyle,
+            ),
+          ),
+          Center(
+            child: Text(Utils.epochToDate(epoch, 'dd MMM yyyy'),
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
+          ),
+        ],
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
     );
@@ -141,7 +160,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
   _loadingIndicator(String debugText) {
     print(debugText);
     return Scaffold(
-        appBar: _buildAppbar(context, ''),
+        appBar: _buildAppbar(context, '', 0),
         body: Container(
             decoration: const BoxDecoration(
               color: Color(0xffDDECFA),
@@ -152,7 +171,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
 
   _requestPermission() {
     return Scaffold(
-      appBar: _buildAppbar(context, ''),
+      appBar: _buildAppbar(context, '', 0),
       body: Container(
         decoration: const BoxDecoration(
           color: Color(0xffDDECFA),
@@ -205,7 +224,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
   _displayError(String debugText) {
     print(debugText);
     return Scaffold(
-      appBar: _buildAppbar(context, ''),
+      appBar: _buildAppbar(context, '', 0),
       body: Center(
         child: Container(
           margin: const EdgeInsets.only(left: 36, right: 36),
@@ -246,7 +265,27 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
         ),),);
   }
 
+  _offlineMode() {
+    // CurrentWeatherModel? offlineData = await SQLHelper.getLastWeather(1);
+    if (_offlineData != null) {
+      return Scaffold(
+        appBar: _buildAppbar(context, 'Location Name', _offlineData!.epochTime ?? 0),
+        drawer: LeadingDrawer(parentContext: context, onTempChange: handleDrawerClosed),
+        body: HomeBody(
+            currentWeatherModel: _offlineData,
+            locationKey: 'LocationKey',
+            locationName: 'LocationName'),
+      );
+    } else {
+      return _displayError('(LOCATION) GAGAL BOS');
+    }
+  }
+
   void handleDrawerClosed() {
     setState(() {});
+  }
+
+  Future<void> getLastData() async {
+    _offlineData = await SQLHelper.getLastWeather(1);
   }
 }

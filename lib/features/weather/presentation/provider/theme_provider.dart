@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'theme.dart';
+import '../../../../config/theme/theme.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeData _themeData = lightMode;
@@ -17,11 +17,5 @@ class ThemeProvider with ChangeNotifier {
     } else if (mode == 1) {
       themeData = darkMode;
     }
-
-    // if (_themeData == lightMode) {
-    //   themeData = darkMode;
-    // } else {
-    //   themeData = lightMode;
-    // }
   }
 }

@@ -14,7 +14,7 @@ import 'package:whats_the_weather/features/weather/presentation/pages/home/home_
 import 'package:whats_the_weather/features/weather/presentation/widgets/forecast_item.dart';
 import 'package:whats_the_weather/injection_container.dart';
 import 'package:provider/provider.dart';
-import 'package:whats_the_weather/features/weather/presentation/favorite_provider.dart';
+import 'package:whats_the_weather/features/weather/presentation/provider/favorite_provider.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key, this.currentWeatherModel, this.locationKey, this.locationName});

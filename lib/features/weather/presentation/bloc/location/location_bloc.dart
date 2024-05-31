@@ -23,6 +23,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
     if(dataState is DataFailed) {
       emit(
+
           LocationError(dataState.error!)
       );
     }
